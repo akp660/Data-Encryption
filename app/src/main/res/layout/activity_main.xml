@@ -8,7 +8,6 @@
     tools:context=".MainActivity"
     android:background="@drawable/gradient_background">
 
-
     <View
         android:id="@+id/downloadButton"
         android:layout_width="50dp"
@@ -19,8 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-
-
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -29,7 +26,6 @@
         app:layout_constraintEnd_toEndOf="@+id/downloadButton"
         app:layout_constraintStart_toStartOf="@+id/downloadButton"
         app:layout_constraintTop_toTopOf="@+id/downloadButton"/>
-
 
     <View
         android:id="@+id/bioButton"
@@ -85,7 +81,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
-
 
             <TextView
                 android:layout_width="wrap_content"

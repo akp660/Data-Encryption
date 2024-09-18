@@ -15,10 +15,10 @@
         android:theme="@style/Theme.DataEncryption"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".home_page"
             android:exported="false" />
         <activity
-            android:name=".home_page"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
