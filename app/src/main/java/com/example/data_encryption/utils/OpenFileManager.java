@@ -28,9 +28,35 @@ public class OpenFileManager {
                 Uri selectedFileUri = data.getData();
                 if (selectedFileUri!=null){
                     String filePath = selectedFileUri.getPath();
-                    Toast.makeText(activity.getApplicationContext(), "Selected file: " + filePath, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(activity.getApplicationContext(), "Selected file: " + filePath, Toast.LENGTH_SHORT).show();
+
+                    if (BioManager.isBiometricAvailable(activity)){
+                        BioManager.authenticateUser(activity, new AuthHandler() {
+                            @Override
+                            public void onAuthSuccess() {
+                                Toast.makeText(activity, "Encrypt file now", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAuthFailure() {
+                                Toast.makeText(activity, "File not encrypted", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        Toast.makeText(activity, "Biometrics not available", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(activity, "No file selected", Toast.LENGTH_SHORT).show();
                 }
             }
+            else{
+                Toast.makeText(activity, "No file selected", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+            Toast.makeText(activity, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
 }

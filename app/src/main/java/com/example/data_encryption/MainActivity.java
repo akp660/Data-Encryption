@@ -45,17 +45,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (BioManager.isBiometricAvailable(MainActivity.this)){
-                    BioManager.authenticateUser(MainActivity.this);
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Biometrics not available on this device", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        bioButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (BioManager.isBiometricAvailable(MainActivity.this)){
+//                    BioManager.authenticateUser(MainActivity.this);
+//                }
+//                else{
+//                    Toast.makeText(MainActivity.this, "Biometrics not available on this device", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){

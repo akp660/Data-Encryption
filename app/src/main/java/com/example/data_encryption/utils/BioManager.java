@@ -16,27 +16,29 @@ import java.util.concurrent.Executor;
 public class BioManager {
 
 
-    public static void authenticateUser(Activity activity) {
+    public static void authenticateUser(Activity activity, AuthHandler authHandler) {
         Executor executor = ContextCompat.getMainExecutor(activity);
 
-        // Create a BiometricPrompt instance
         BiometricPrompt biometricPrompt = new BiometricPrompt((FragmentActivity) activity, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(activity, "Authentication failed: "+ errString, Toast.LENGTH_SHORT).show();
+                authHandler.onAuthFailure();
             }
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(activity, "Authentication succeeded", Toast.LENGTH_SHORT).show();
+                authHandler.onAuthSuccess();
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 Toast.makeText(activity, "Authentication failed", Toast.LENGTH_SHORT).show();
+                authHandler.onAuthFailure();
             }
         });
 
