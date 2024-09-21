@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.data_encryption.utils.BioManager;
 import com.example.data_encryption.utils.OpenFileManager;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -24,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
         downloadButton = findViewById(R.id.downloadButton);
         newFileButton = findViewById(R.id.newFileButton);
         bioButton = findViewById(R.id.bioButton);
-
-
+        
         setOnClickFunctions();
 
     }
@@ -60,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        OpenFileManager.handleActivityResult(MainActivity.this, requestCode, resultCode, data);
+        try {
+            OpenFileManager.handleActivityResult(MainActivity.this, requestCode, resultCode, data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

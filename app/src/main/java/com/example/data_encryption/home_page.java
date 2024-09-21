@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.data_encryption.utils.OpenFileManager;
 import com.google.android.material.button.MaterialButton;
 
+import java.io.IOException;
+
 public class home_page extends AppCompatActivity {
 
     MaterialButton uploadButton;
@@ -22,6 +24,7 @@ public class home_page extends AppCompatActivity {
         uploadButton = findViewById(R.id.materialCardView).findViewById(R.id.uploadButton);
 
         setOnClickListeners();
+        System.out.println("started");
 
     }
 
@@ -36,7 +39,11 @@ public class home_page extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        OpenFileManager.handleActivityResult(home_page.this, requestCode, resultCode, data);
+        try {
+            OpenFileManager.handleActivityResult(home_page.this, requestCode, resultCode, data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
