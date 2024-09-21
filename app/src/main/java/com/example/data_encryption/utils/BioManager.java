@@ -11,7 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import java.io.IOException;
+import java.security.KeyStore;
 import java.util.concurrent.Executor;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 
 public class BioManager {
 
@@ -24,21 +29,33 @@ public class BioManager {
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(activity, "Authentication failed: "+ errString, Toast.LENGTH_SHORT).show();
-                authHandler.onAuthFailure();
+                try {
+                    authHandler.onAuthFailure();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(activity, "Authentication succeeded", Toast.LENGTH_SHORT).show();
-                authHandler.onAuthSuccess();
+                try {
+                    authHandler.onAuthSuccess();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 Toast.makeText(activity, "Authentication failed", Toast.LENGTH_SHORT).show();
-                authHandler.onAuthFailure();
+                try {
+                    authHandler.onAuthFailure();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
