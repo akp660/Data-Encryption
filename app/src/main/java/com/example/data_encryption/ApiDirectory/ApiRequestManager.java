@@ -77,7 +77,7 @@ public class ApiRequestManager {
         request.setRetryPolicy(new DefaultRetryPolicy(0,-1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
     }
-    
+
     public void authenticate(String email, String password, final ApiResponseListener<JSONObject> listener) {
         String url = BASE_URL + "/auth/login";
 
