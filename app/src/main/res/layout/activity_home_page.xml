@@ -81,7 +81,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:strokeColor="#666666">
+                    app:strokeColor="#58CCCC">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -91,7 +91,6 @@
                         layout="@layout/upload_file_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
-
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
