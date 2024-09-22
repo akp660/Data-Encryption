@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
+import android.util.Base64;
 
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.FileProvider;
@@ -15,8 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.MessageDigest;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -69,6 +73,32 @@ public class CryptoKeyGenerator {
         }
     }
 
+    //encryption of first key using receiver's RSA public
+    public static String encryptAESKeyWithRSA(byte[] aesKey, String receiverRSAPublicKey) {
+        try {
+            byte[] publicBytes = Base64.decode(receiverRSAPublicKey, Base64.DEFAULT);
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+
+            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+            byte[] encryptedKey = cipher.doFinal(aesKey);
+            return Base64.encodeToString(encryptedKey, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static byte[] getAESKeyBytes(SecretKey secretKey) {
+        return secretKey.getEncoded();
+    }
+    public static SecretKey generateSecretKeyFromBytes(byte[] keyBytes) {
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length, "AES");
+    }
+
+
 
     public static void encryptFile(Activity activity, File inputFile, byte[] key){
         try{
@@ -84,8 +114,6 @@ public class CryptoKeyGenerator {
 
 //            File encryptedFile = saveEncryptedFile(activity, outputBytes, "encryptedfile");
 
-
-
             System.out.println("File successfully encrypted");
 
             File internalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -99,8 +127,6 @@ public class CryptoKeyGenerator {
 
 //            downloadEncryptedFile(activity, encryptedFile);
 //            System.out.println("File downloaded");
-
-
 
         }
         catch (Exception e){

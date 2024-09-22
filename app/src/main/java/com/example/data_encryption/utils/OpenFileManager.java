@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.crypto.SecretKey;
+
 public class OpenFileManager {
 
     private static final int PICK_FILE_REQUEST = 1;
@@ -41,9 +43,21 @@ public class OpenFileManager {
                         BioManager.authenticateUser(activity, new AuthHandler() {
                             @Override
                             public void onAuthSuccess() throws IOException {
-                                Toast.makeText(activity, "Encrypt file now", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Encrypting file now...", Toast.LENGTH_SHORT).show();
+//                                byte[] biometricKey = CryptoKeyGenerator.generateKeyFromBiometrics();
+//                                CryptoKeyGenerator.encryptFile(activity, getFileFromUri(activity, selectedFileUri), biometricKey);
+
                                 byte[] biometricKey = CryptoKeyGenerator.generateKeyFromBiometrics();
+                                SecretKey aesKey = CryptoKeyGenerator.generateSecretKeyFromBytes(biometricKey);
+
                                 CryptoKeyGenerator.encryptFile(activity, getFileFromUri(activity, selectedFileUri), biometricKey);
+
+//                              get the public key from database
+                                String rsaPublicKey = "receiver_public_key_string";
+
+                                String encryptedAESKey = CryptoKeyGenerator.encryptAESKeyWithRSA(biometricKey, rsaPublicKey);
+
+                                Toast.makeText(activity, "File encrypted successfully!", Toast.LENGTH_SHORT).show();
 
                             }
 
