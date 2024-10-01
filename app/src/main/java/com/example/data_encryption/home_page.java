@@ -28,7 +28,6 @@ public class home_page extends AppCompatActivity {
         defaultFileImage = findViewById(R.id.defaultFileImage);
 
         setOnClickListeners();
-        System.out.println("started");
 
     }
 
