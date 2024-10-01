@@ -48,9 +48,9 @@
 
         <ImageView
             android:id="@+id/defaultFileImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:contentDescription="TODO"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="add_image"
             android:elevation="50dp"
             android:src="@drawable/add_photos_image_foreground"
             app:layout_constraintBottom_toBottomOf="@+id/cardView"
