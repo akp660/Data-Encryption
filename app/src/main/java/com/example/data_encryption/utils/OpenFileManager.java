@@ -30,8 +30,7 @@ public class OpenFileManager {
         }
     }
 
-    public static void handleActivityResult(Activity activity, int requestCode, int resultCode, Intent data) throws IOException {
-        System.out.println("Activity result");
+    public static boolean handleActivityResult(Activity activity, int requestCode, int resultCode, Intent data) throws IOException {
         if (requestCode == PICK_FILE_REQUEST && resultCode == Activity.RESULT_OK){
             if (data!=null){
                 Uri selectedFileUri = data.getData();
@@ -43,6 +42,7 @@ public class OpenFileManager {
                         BioManager.authenticateUser(activity, new AuthHandler() {
                             @Override
                             public void onAuthSuccess() throws IOException {
+                                FileImageHandler.setDefaultFileData(activity, true);
                                 Toast.makeText(activity, "Encrypting file now...", Toast.LENGTH_SHORT).show();
 //                                byte[] biometricKey = CryptoKeyGenerator.generateKeyFromBiometrics();
 //                                CryptoKeyGenerator.encryptFile(activity, getFileFromUri(activity, selectedFileUri), biometricKey);
@@ -66,6 +66,8 @@ public class OpenFileManager {
                                 Toast.makeText(activity, "File not encrypted", Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                        return true;
                     }
                     else{
                         Toast.makeText(activity, "Biometrics not available", Toast.LENGTH_SHORT).show();
@@ -82,6 +84,8 @@ public class OpenFileManager {
         else{
             Toast.makeText(activity, "No file selected", Toast.LENGTH_SHORT).show();
         }
+
+        return false;
     }
 
     public static File getFileFromUri(Context context, Uri uri) throws IOException {

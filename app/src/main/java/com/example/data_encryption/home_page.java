@@ -1,8 +1,10 @@
 package com.example.data_encryption;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import java.io.IOException;
 public class home_page extends AppCompatActivity {
 
     MaterialButton uploadButton;
+    ImageView defaultFileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class home_page extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         uploadButton = findViewById(R.id.materialCardView).findViewById(R.id.uploadButton);
+        defaultFileImage = findViewById(R.id.defaultFileImage);
 
         setOnClickListeners();
         System.out.println("started");
@@ -40,7 +44,12 @@ public class home_page extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode,resultCode,data);
         try {
-            OpenFileManager.handleActivityResult(home_page.this, requestCode, resultCode, data);
+            if (OpenFileManager.handleActivityResult(home_page.this, requestCode, resultCode, data)){
+                defaultFileImage.setImageResource(R.drawable.document_icon);
+            }
+            else{
+                defaultFileImage.setImageResource(R.drawable.add_photos_image_foreground);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

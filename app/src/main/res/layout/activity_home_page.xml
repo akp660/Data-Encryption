@@ -47,11 +47,12 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
+            android:id="@+id/defaultFileImage"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:contentDescription="TODO"
             android:elevation="50dp"
-            android:src="@drawable/document_icon"
+            android:src="@drawable/add_photos_image_foreground"
             app:layout_constraintBottom_toBottomOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="@+id/cardView"
             app:layout_constraintStart_toStartOf="@+id/cardView"
