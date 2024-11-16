@@ -39,9 +39,9 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation libs.google.flexbox
 
     //Volley libraries
-    implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.auth0.android:jwtdecode:2.0.0'
+    implementation libs.volley
+    implementation libs.jwtdecode
 }
