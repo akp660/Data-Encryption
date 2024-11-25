@@ -3,16 +3,17 @@ package com.example.data_encryption.ApiDirectory.model;
 public class UserModel {
     private String name;
     private String email;
-    private String encryption_token;
     private String password;
+    private String rsa_public_key;
 
-    public UserModel(String name, String email, String encryption_token, String password) {
+    public UserModel(String name, String email, String rsa_public_key, String password) {
         this.name = name;
         this.email = email;
-        this.encryption_token = encryption_token;
+        this.rsa_public_key = rsa_public_key;
         this.password = password;
     }
 
+    // Getters and setters
     public UserModel() {
     }
 
@@ -32,19 +33,19 @@ public class UserModel {
         this.email = email;
     }
 
-    public String getEncryption_token() {
-        return encryption_token;
-    }
-
-    public void setEncryption_token(String encryption_token) {
-        this.encryption_token = encryption_token;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRsa_public_key() {
+        return rsa_public_key;
+    }
+
+    public void setRsa_public_key(String rsa_public_key) {
+        this.rsa_public_key = rsa_public_key;
     }
 }
