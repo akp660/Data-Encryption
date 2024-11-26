@@ -44,21 +44,40 @@ public class OpenFileManager {
                             public void onAuthSuccess() throws IOException {
                                 FileImageHandler.setDefaultFileData(activity, true);
                                 Toast.makeText(activity, "Encrypting file now...", Toast.LENGTH_SHORT).show();
-//                                byte[] biometricKey = CryptoKeyGenerator.generateKeyFromBiometrics();
-//                                CryptoKeyGenerator.encryptFile(activity, getFileFromUri(activity, selectedFileUri), biometricKey);
 
+                                // Generate biometric key
                                 byte[] biometricKey = CryptoKeyGenerator.generateKeyFromBiometrics();
+                                if (biometricKey == null) {
+                                    Toast.makeText(activity, "Failed to generate biometric key", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+
+                                // Generate SecretKey from biometric key bytes
                                 SecretKey aesKey = CryptoKeyGenerator.generateSecretKeyFromBytes(biometricKey);
+                                if (aesKey == null) {
+                                    Toast.makeText(activity, "Failed to generate AES SecretKey", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
 
-                                CryptoKeyGenerator.encryptFile(activity, getFileFromUri(activity, selectedFileUri), biometricKey);
+                                // Encrypt the selected file
+                                File selectedFile = getFileFromUri(activity, selectedFileUri);
+                                if (selectedFile != null) {
+                                    CryptoKeyGenerator.encryptFile(activity, selectedFile, biometricKey);
 
-//                              get the public key from database
-                                String rsaPublicKey = "receiver_public_key_string";
+                                    // Get the public key (replace with the actual public key retrieval logic)
+                                    String rsaPublicKey = "receiver_public_key_string";
 
-                                String encryptedAESKey = CryptoKeyGenerator.encryptAESKeyWithRSA(biometricKey, rsaPublicKey);
+                                    // Encrypt the AES key with the receiver's RSA public key
+                                    String encryptedAESKey = CryptoKeyGenerator.encryptAESKeyWithRSA(biometricKey, rsaPublicKey);
 
-                                Toast.makeText(activity, "File encrypted successfully!", Toast.LENGTH_SHORT).show();
-
+                                    if (encryptedAESKey != null) {
+                                        Toast.makeText(activity, "File encrypted successfully!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(activity, "Failed to encrypt AES key", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(activity, "Failed to retrieve selected file", Toast.LENGTH_SHORT).show();
+                                }
                             }
 
                             @Override

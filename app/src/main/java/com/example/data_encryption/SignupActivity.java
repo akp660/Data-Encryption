@@ -43,7 +43,6 @@ public class SignupActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize views
         login = findViewById(R.id.logIn);
         signUpBtn = findViewById(R.id.cardView3);
         nameField = findViewById(R.id.name);
@@ -58,7 +57,6 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(this, "RSA Key Pair already exists", Toast.LENGTH_SHORT).show();
         }
 
-        // Login button listener
         login.setOnClickListener(view -> {
             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -66,13 +64,10 @@ public class SignupActivity extends AppCompatActivity {
             triggerVibration();
         });
 
-        // Sign Up button listener
         signUpBtn.setOnClickListener(view -> handleSignUp());
     }
 
-    // Handle sign-up process
     private void handleSignUp() {
-        // Get user input
 //        Toast.makeText(this, "CLICKED!!", Toast.LENGTH_SHORT).show();
         String name = nameField.getText().toString().trim();
         String email = emailField.getText().toString().trim();
@@ -86,7 +81,6 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-
         // Retrieve RSA public key
         String rsaPublicKey = RSAKeyManager.getRSAPublicKeyBase64();
         if (rsaPublicKey == null) {
@@ -98,7 +92,6 @@ public class SignupActivity extends AppCompatActivity {
         }
 
 
-        // Create a UserModel object
         UserModel user = new UserModel(name, email, rsaPublicKey, password);
 
         // Send user data to the API
