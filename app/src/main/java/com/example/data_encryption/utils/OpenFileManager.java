@@ -1,5 +1,7 @@
 package com.example.data_encryption.utils;
 
+import static com.example.data_encryption.utils.CryptoKeyGenerator.combineEncryptedFileAndKey;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -65,12 +67,19 @@ public class OpenFileManager {
                                     CryptoKeyGenerator.encryptFile(activity, selectedFile, biometricKey);
 
                                     // Get the public key (replace with the actual public key retrieval logic)
-                                    String rsaPublicKey = "receiver_public_key_string";
+//                                    String rsaPublicKey = "receiver_public_key_string";
+                                    String rsaPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuIKFgdbw3Tn0lcZ4xRJjTytn5LsIp2P6s5W8wDh6x9eP2BhBlxFgqOqJ2KUf4sYI9dZ/vHupNcvC8vb/Bf+KoB8emqH5c+wLNiRIH5z3UnlHJW9kjcJ4jb3MI4ON7YX5m1PCmXr2LRgrB4rU1BcA5sCMsDvbFgByxu5ObKH1tdM9+jfNFHTzNc+lznTx0dwbgGogD8DHjcB1kxuLFSrKfErUNkH9OSJQ1U8T9Fb0ErmjO8rlAeSmUanHE/ebFGnJihpB1dVwckFCefj06z6qlbVNZUL7AzQf8DrW24D6g+/T5/hh3jKrkWlfYzL4uFVRt8V06jKG3S7W8gD3Osm0OQIDAQAB";
+
 
                                     // Encrypt the AES key with the receiver's RSA public key
                                     String encryptedAESKey = CryptoKeyGenerator.encryptAESKeyWithRSA(biometricKey, rsaPublicKey);
 
                                     if (encryptedAESKey != null) {
+                                        if (encryptedAESKey != null) {
+                                            // Combine the encrypted file and the AES key into a single file
+                                            combineEncryptedFileAndKey(activity, selectedFile, encryptedAESKey);
+                                        }
+
                                         Toast.makeText(activity, "File encrypted successfully!", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(activity, "Failed to encrypt AES key", Toast.LENGTH_SHORT).show();
