@@ -1,8 +1,11 @@
 package com.example.data_encryption.utils;
 
+import static com.example.data_encryption.utils.OpenFileManager.getFileNameFromUri;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
@@ -19,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.MessageDigest;
@@ -154,6 +158,7 @@ public class CryptoKeyGenerator {
     }
 
     // Encrypt file using AES key
+    // Encrypt file using AES key
     public static void encryptFile(Activity activity, File inputFile, byte[] key) {
         try {
             SecretKey secretKey = new SecretKeySpec(key, 0, key.length, "AES");
@@ -164,48 +169,77 @@ public class CryptoKeyGenerator {
             byte[] inputBytes = new byte[(int) inputFile.length()];
             inputStream.read(inputBytes);
 
-            byte[] outputBytes = cipher.doFinal(inputBytes);
+            // Encrypt file bytes
+            byte[] encryptedBytes = cipher.doFinal(inputBytes);
 
-            File internalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            File encryptedFile = new File(internalStorage, "encryptedFile");
+            // Create a new file for encrypted data
+            File encryptedFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "encryptedFile");
+//            File encryptedFile = new File(internalStorage, "encryptedFile.enc"); // Make sure the extension is .enc or similar
+
+            // Write encrypted data to the new file
             FileOutputStream outputStream = new FileOutputStream(encryptedFile);
-            outputStream.write(outputBytes);
+            outputStream.write(encryptedBytes);
             outputStream.flush();
             outputStream.close();
 
-            System.out.println("File successfully encrypted and saved to Downloads.");
+            Log.d("FileEncryption", "File encrypted and saved at: " + encryptedFile.getAbsolutePath());
         } catch (Exception e) {
-            System.out.println("Exception occurred: " + e.toString());
+            Log.e("EncryptionError", "Error encrypting file: " + e.toString());
         }
     }
 
-    public static void combineEncryptedFileAndKey(Activity activity, File encryptedFile, String encryptedAESKey) {
-        try {
-            // Define output file
-            File combinedFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "output.encrypted");
 
-            // Write encrypted AES key and encrypted file data sequentially
+    public static void combineEncryptedFileAndKeyPreserveFormatAndDownload(Activity activity, File encryptedFile, String encryptedAESKey, Uri uri) {
+        try {
+            String fileName = getFileNameFromUri(activity,uri);
+            String fileExtension = "";
+            String baseFileName = fileName;
+
+            int dotIndex = fileName.lastIndexOf(".");
+            if (dotIndex != -1) {
+                fileExtension = fileName.substring(dotIndex);  // Including the dot in the extension
+                baseFileName = fileName.substring(0, dotIndex); // File name without the extension
+            } else {
+                fileExtension = "";  // No extension found
+                baseFileName = fileName;
+            }
+
+            Log.d("FileInfo", "File name: " + fileName + " || File extension: " + fileExtension + " || Base name: " + baseFileName);
+
+// Step 2: Define the output file in the Downloads directory with "_encrypted" added
+            File combinedFile = new File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                    baseFileName + "_encrypted" + fileExtension // Ensure the extension is included
+            );
+
+// Step 3: Write the encrypted AES key and file contents sequentially
             try (FileOutputStream fos = new FileOutputStream(combinedFile)) {
-                // Write the encrypted AES key length
-                byte[] aesKeyBytes = encryptedAESKey.getBytes();
+                // Write a 4-byte header for AES key length
+                byte[] aesKeyBytes = encryptedAESKey.getBytes(StandardCharsets.UTF_8);
                 fos.write(intToBytes(aesKeyBytes.length));
 
                 // Write the encrypted AES key
                 fos.write(aesKeyBytes);
 
-                // Write the encrypted file
-                try (InputStream encryptedFileStream = new FileInputStream(encryptedFile)) {
+                // Write the encrypted file contents
+                try (FileInputStream fis = new FileInputStream(encryptedFile)) {
                     byte[] buffer = new byte[1024];
                     int length;
-                    while ((length = encryptedFileStream.read(buffer)) != -1) {
+                    while ((length = fis.read(buffer)) != -1) {
                         fos.write(buffer, 0, length);
                     }
                 }
             }
 
-            // Notify user about successful file combination
+// Step 4: Notify the user about the combined file
             Toast.makeText(activity, "File and key combined successfully! Saved at: " + combinedFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
             Log.d("stepbystep", "File and key combined successfully! Saved at: " + combinedFile.getAbsolutePath());
+
+            // Step 5: Add the combined file to the Media Scanner for visibility in file managers
+            Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            scanIntent.setData(Uri.fromFile(combinedFile));
+            activity.sendBroadcast(scanIntent);
+
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(activity, "Failed to combine file and key: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -213,16 +247,19 @@ public class CryptoKeyGenerator {
     }
 
     /**
-     * Helper function to convert an integer to a 4-byte array.
+     * Utility to convert an integer to 4 bytes.
      */
     private static byte[] intToBytes(int value) {
-        return new byte[] {
+        return new byte[]{
                 (byte) (value >> 24),
                 (byte) (value >> 16),
                 (byte) (value >> 8),
                 (byte) value
         };
     }
+
+
+
 
 
     // Combine encrypted file and AES key into a JSON package
