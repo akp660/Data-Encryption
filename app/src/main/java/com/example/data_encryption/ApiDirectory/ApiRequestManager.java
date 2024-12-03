@@ -42,6 +42,9 @@ public class ApiRequestManager {
             if(u.getPassword() != null) {
                 payload.put("password", u.getPassword());
             }
+            if(u.getRsa_public_key() != null){
+                payload.put("encryption_token", u.getRsa_public_key());
+            }
         }catch (JSONException e){
             e.printStackTrace();
         }
