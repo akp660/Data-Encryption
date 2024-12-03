@@ -44,4 +44,10 @@ dependencies {
     //Volley libraries
     implementation libs.volley
     implementation libs.jwtdecode
+
+    implementation libs.lottie
+
+    implementation libs.material.v150
+    implementation libs.viewpager2
+
 }

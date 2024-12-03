@@ -6,10 +6,13 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 jwtdecode = "2.0.0"
+lottie = "6.1.0"
 material = "1.12.0"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
 biometric = "1.1.0"
+materialVersion = "1.5.0"
+viewpager2 = "1.1.0"
 volley = "1.2.1"
 
 [libraries]
@@ -19,10 +22,13 @@ ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitV
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 jwtdecode = { module = "com.auth0.android:jwtdecode", version.ref = "jwtdecode" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
+material-v150 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 volley = { module = "com.android.volley:volley", version.ref = "volley" }
 
 [plugins]
