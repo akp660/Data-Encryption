@@ -82,7 +82,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         // Retrieve RSA public key
-        String rsaPublicKey = RSAKeyManager.getRSAPublicKeyBase64();
+        String rsaPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuIKFgdbw3Tn0lcZ4xRJjTytn5LsIp2P6s5W8wDh6x9eP2BhBlxFgqOqJ2KUf4sYI9dZ/vHupNcvC8vb/Bf+KoB8emqH5c+wLNiRIH5z3UnlHJW9kjcJ4jb3MI4ON7YX5m1PCmXr2LRgrB4rU1BcA5sCMsDvbFgByxu5ObKH1tdM9+jfNFHTzNc+lznTx0dwbgGogD8DHjcB1kxuLFSrKfErUNkH9OSJQ1U8T9Fb0ErmjO8rlAeSmUanHE/ebFGnJihpB1dVwckFCefj06z6qlbVNZUL7AzQf8DrW24D6g+/T5/hh3jKrkWlfYzL4uFVRt8V06jKG3S7W8gD3Osm0OQIDAQAB";
         if (rsaPublicKey == null) {
             Log.d("SignupActivity", "RSA public key retrieval failed");
             Toast.makeText(this, "Failed to retrieve RSA public key", Toast.LENGTH_SHORT).show();

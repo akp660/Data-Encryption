@@ -40,18 +40,14 @@ public class home_page extends AppCompatActivity {
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        try {
-            if (OpenFileManager.handleActivityResult(home_page.this, requestCode, resultCode, data)){
-                defaultFileImage.setImageResource(R.drawable.document_icon);
-            }
-            else{
-                defaultFileImage.setImageResource(R.drawable.add_photos_image_foreground);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (OpenFileManager.handleActivityResult(home_page.this, requestCode, resultCode, data)) {
+            defaultFileImage.setImageResource(R.drawable.document_icon);
+        } else {
+            defaultFileImage.setImageResource(R.drawable.add_photos_image_foreground);
         }
     }
+
 
 }

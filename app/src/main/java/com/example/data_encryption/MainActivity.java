@@ -59,12 +59,12 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        try {
-            OpenFileManager.handleActivityResult(MainActivity.this, requestCode, resultCode, data);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+//        super.onActivityResult(requestCode,resultCode,data);
+//        try {
+//            OpenFileManager.handleActivityResult(MainActivity.this, requestCode, resultCode, data);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
