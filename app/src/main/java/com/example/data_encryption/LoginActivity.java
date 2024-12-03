@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         homepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, home_page.class);
+                Intent intent = new Intent(LoginActivity.this, home_page_2.class);
                 startActivity(intent);
 // for animation
                 overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
