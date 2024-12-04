@@ -2,6 +2,7 @@ package com.example.data_encryption;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -68,7 +69,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void handleSignUp() {
-//        Toast.makeText(this, "CLICKED!!", Toast.LENGTH_SHORT).show();
         String name = nameField.getText().toString().trim();
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
@@ -90,7 +90,6 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             Log.d("SignupActivity", "RSA Public Key: " + rsaPublicKey);
         }
-
 
         UserModel user = new UserModel(name, email, rsaPublicKey, password);
 
@@ -114,7 +113,14 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(SignupActivity.this, "Signup failed: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Save name in SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userName", name);
+        editor.apply();
     }
+
 
     @Override
     public void onBackPressed() {

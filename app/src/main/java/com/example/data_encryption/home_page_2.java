@@ -2,12 +2,14 @@ package com.example.data_encryption;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -27,6 +29,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class home_page_2 extends AppCompatActivity {
 
     CardView i_btn;
+    TextView user_name;
 
 
     @Override
@@ -43,6 +46,13 @@ public class home_page_2 extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager2 viewPager = findViewById(R.id.view_pager);
         i_btn = findViewById(R.id.i_btn);
+        user_name = findViewById(R.id.user_name);
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String userName = sharedPreferences.getString("userName", "User");
+
+        user_name.setText(userName);
 
 
 
