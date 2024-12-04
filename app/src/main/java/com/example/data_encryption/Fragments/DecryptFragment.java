@@ -15,6 +15,6 @@ public class DecryptFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_decript, container, false);
+        return inflater.inflate(R.layout.fragment_decrypt, container, false);
     }
 }
