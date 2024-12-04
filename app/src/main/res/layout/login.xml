@@ -5,16 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#58CACA"
+    android:background="#B3BFE7"
     tools:context=".LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="-2dp"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/background_2"
+        android:background="@drawable/background_3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="100dp"
-            android:fontFamily="@font/inria_sans"
             android:text="Log In"
             android:textColor="#141B75"
             android:textSize="34sp"
@@ -42,7 +41,6 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:fontFamily="@font/inria_sans"
             android:text="Encrypting File System provides an added layer of protection by encrypting files or folders."
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,12 +54,12 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="150dp"
             android:layout_marginEnd="30dp"
+            app:cardBackgroundColor="#3DF4FEFF"
             app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:strokeColor="#141B74"
-            app:cardBackgroundColor="#3DF4FEFF"
             app:strokeWidth="2dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,12 +89,12 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
+            app:cardBackgroundColor="#3DF4FEFF"
             app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
             app:strokeColor="#141B74"
-            app:cardBackgroundColor="#3DF4FEFF"
             app:strokeWidth="2dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,12 +123,12 @@
             android:layout_height="40dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="50dp"
+            app:cardBackgroundColor="#646F9A"
             app:cardCornerRadius="8dp"
             app:cardElevation="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView3"
-            app:strokeColor="#58C9C9"
-            app:cardBackgroundColor="#3DF4FEFF"
+            app:strokeColor="#B3BFE7"
             app:strokeWidth="1.5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -140,9 +138,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
                     android:text="Login"
-                    android:textColor="#59FEFF"
+                    android:textColor="#B3BFE7"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -1,8 +1,14 @@
 package com.example.data_encryption.Fragments;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +34,11 @@ public class EncryptFragment extends Fragment {
 
         cardUpload = view.findViewById(R.id.cardView);
 
-        cardUpload.setOnClickListener(v -> OpenFileManager.manageFile(this));
+        cardUpload.setOnClickListener(v -> {
+            triggerVibration();
+            // Call the file manager
+            OpenFileManager.manageFile(this);
+        });
 
         return view;
     }
@@ -47,4 +57,20 @@ public class EncryptFragment extends Fragment {
             });
         }
     }
+
+    // Trigger vibration
+    private void triggerVibration() {
+        Context context = getContext();  // Retrieve the fragment's context
+        if (context != null) {
+            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            if (vibrator != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    vibrator.vibrate(50);
+                }
+            }
+        }
+    }
+
 }

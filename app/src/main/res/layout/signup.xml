@@ -11,10 +11,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="-2dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="-2dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/background_3"
+        android:background="@drawable/background_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -90,9 +90,9 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="30dp"
+            app:cardBackgroundColor="#3DF4FEFF"
             app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:cardBackgroundColor="#3DF4FEFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
             app:strokeColor="#141B74"
@@ -126,12 +126,12 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="30dp"
+            app:cardBackgroundColor="#3DF4FEFF"
             app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
             app:strokeColor="#141B74"
-            app:cardBackgroundColor="#3DF4FEFF"
             app:strokeWidth="2dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -161,12 +161,12 @@
             android:layout_height="40dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="50dp"
+            app:cardBackgroundColor="#646F9A"
             app:cardCornerRadius="10dp"
             app:cardElevation="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView3"
             app:strokeColor="#B3BFE7"
-            app:cardBackgroundColor="#646F9A"
             app:strokeWidth="1.5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
