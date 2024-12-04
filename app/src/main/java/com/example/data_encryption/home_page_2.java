@@ -18,6 +18,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.data_encryption.Fragments.DecryptFragment;
+import com.example.data_encryption.Fragments.EncryptFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -90,7 +93,7 @@ public class home_page_2 extends AppCompatActivity {
         @NonNull
         @Override
         public androidx.fragment.app.Fragment createFragment(int position) {
-            return position == 0 ? new IncryptFragment() : new DecriptFragment();
+            return position == 0 ? new EncryptFragment() : new DecryptFragment();
         }
 
         @Override

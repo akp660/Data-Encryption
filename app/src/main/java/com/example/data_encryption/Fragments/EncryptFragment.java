@@ -1,4 +1,4 @@
-package com.example.data_encryption;
+package com.example.data_encryption.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,11 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class DecriptFragment extends Fragment {
+import com.example.data_encryption.R;
+
+public class EncryptFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_decript, container, false);
+        return inflater.inflate(R.layout.fragment_incrypt, container, false);
     }
 }
