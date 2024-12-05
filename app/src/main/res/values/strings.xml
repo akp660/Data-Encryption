@@ -2,4 +2,14 @@
     <string name="app_name">Encrypto</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="how_its_work">How its works…</string>
+    <string name="Point1">1.  Select your choise between Encryption and Decryption.</string>
+    <string name="Point2">2.  Click this icon to open file explorer.</string>
+    <string name="Point3">3.  Select file you want to Encrypt or Decrypt.</string>
+    <string name="Point4">4.  Confirm your Biometric.</string>
+    <string name="Point5">5.  Encryped / Decrypted file will save in "Downloded" folder.</string>
+
+
+
 </resources>

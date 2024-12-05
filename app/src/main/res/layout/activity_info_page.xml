@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="How its works..."
+        android:text="@string/how_its_work"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="80dp"
-            android:text="1.  Select your choise between Encryption and Decryption."
+            android:text="@string/Point1"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,51 +47,75 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="80dp"
-            android:text="2.  Click this icon to select file."
+            android:text="@string/Point2"
             android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toTopOf="@+id/cardView" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:text="@string/Point3"
+            android:textAlignment="textEnd"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="35dp"
-            android:text="3.  Select file you want to Encrypt or Decrypt. "
-            android:textAlignment="textEnd"
+            android:layout_marginEnd="50dp"
+            android:text="@string/Point4"
             android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toTopOf="@+id/lottieAnimationView3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/Point5"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView3" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="50dp"
             android:layout_height="76.65dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:rotation="6"
             app:cardBackgroundColor="#B1BAFF"
             app:cardCornerRadius="6dp"
             app:cardElevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
             android:layout_width="50dp"
             android:layout_height="76.65dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:rotation="-8"
             app:cardBackgroundColor="#6E91F0"
             app:cardCornerRadius="6dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -136,6 +159,104 @@
 
         </androidx.cardview.widget.CardView>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/file_anim"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/file_anim" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="5dp"
+            app:cardCornerRadius="50dp"
+            app:cardBackgroundColor="#A2A2A2"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView3"
+            app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView3">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="-5dp"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginEnd="-5dp"
+                    android:layout_marginBottom="-5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/biometric_anim" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView3"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/file_anim" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="5dp"
+            app:cardBackgroundColor="#A2A2A2"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView4"
+            app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView4">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="-5dp"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginEnd="-5dp"
+                    android:layout_marginBottom="-5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/download_anim" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
