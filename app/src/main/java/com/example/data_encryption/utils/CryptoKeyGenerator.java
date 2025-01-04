@@ -124,7 +124,6 @@ public class CryptoKeyGenerator {
                 return;
             }
 
-// Use the Downloads directory to save the combined file
             File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File combinedFile = new File(downloadsDir, "encrypted_" + fileName);
 
@@ -168,9 +167,6 @@ public class CryptoKeyGenerator {
         }
     }
 
-
-
-    // Method to encrypt data (already exists in your code)
     public static byte[] encryptData(byte[] plaintext, SecretKey secretKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -237,25 +233,41 @@ public class CryptoKeyGenerator {
         return rsaCipher.doFinal(aesSecretKey.getEncoded());
     }
 
-    // Method to retrieve the RSA public key (example implementation)
+    // to retrieve the RSA public key
     public static PublicKey getRSAPublicKey() throws Exception {
-        // Replace with the actual way to retrieve the RSA public key (e.g., from a file or server)
-        // For now, we assume the key is stored as a Base64 string
-        String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuIKFgdbw3Tn0lcZ4xRJjTytn5LsIp2P6s5W8wDh6x9eP2BhBlxFgqOqJ2KUf4sYI9dZ/vHupNcvC8vb/Bf+KoB8emqH5c+wLNiRIH5z3UnlHJW9kjcJ4jb3MI4ON7YX5m1PCmXr2LRgrB4rU1BcA5sCMsDvbFgByxu5ObKH1tdM9+jfNFHTzNc+lznTx0dwbgGogD8DHjcB1kxuLFSrKfErUNkH9OSJQ1U8T9Fb0ErmjO8rlAeSmUanHE/ebFGnJihpB1dVwckFCefj06z6qlbVNZUL7AzQf8DrW24D6g+/T5/hh3jKrkWlfYzL4uFVRt8V06jKG3S7W8gD3Osm0OQIDAQAB";
+        // Use a public key in X.509/SPKI format
+        String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjbXYlJj8AaLNtCciysIFg8d/TZv96ipRkKIh5NcnNR1IgxepMRFelCW9mwQ0BkyzfPC4SI35O9xZGYi0IOOFbCYUOCMDDTMZG4A9kQUWc1PvNmJ9+abenei6dcR8Nyr3RE6WL2M1g+Uvt11REPd7cXL8ytUoOs+LDS+0xHZVGyTftYkTniqig8QTTOeCL4ksgByHRudQMHthcbfXCHaPxT2SQ6qC19JVHWr9ViCLSPjmeZGgy85xS3VwSaX+C3fdETwitTtsD8BgSZT4+U1E7tMwcTf+CiZE/HLlcwQY1zr+feC3gIyRDJecDxgEOiZJitQA8x+t6jdB7b4mq18ztQIDAQAB";
 
-        Log.d("getRSAPublicKey", "Base64 Public Key: " + base64PublicKey);
-        byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
-        if (decodedKey == null || decodedKey.length == 0) {
-            Log.e("getRSAPublicKey", "Decoded key is null or empty");
-            throw new IllegalArgumentException("Public key decoding failed");
+        try {
+            byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedKey);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return keyFactory.generatePublic(keySpec);
+        } catch (Exception e) {
+            Log.e("getRSAPublicKey", "Error loading public key: " + e.getMessage());
+            throw e;
         }
-        Log.d("getRSAPublicKey", "Decoded Key Length: " + decodedKey.length);
-
-//        byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedKey);
-        return keyFactory.generatePublic(keySpec);
     }
+//    public static PublicKey getRSAPublicKey() throws Exception {
+//        // Replace with the actual way to retrieve the RSA public key (e.g., from a file or server)
+//        // For now, we assume the key is stored as a Base64 string
+////        String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuIKFgdbw3Tn0lcZ4xRJjTytn5LsIp2P6s5W8wDh6x9eP2BhBlxFgqOqJ2KUf4sYI9dZ/vHupNcvC8vb/Bf+KoB8emqH5c+wLNiRIH5z3UnlHJW9kjcJ4jb3MI4ON7YX5m1PCmXr2LRgrB4rU1BcA5sCMsDvbFgByxu5ObKH1tdM9+jfNFHTzNc+lznTx0dwbgGogD8DHjcB1kxuLFSrKfErUNkH9OSJQ1U8T9Fb0ErmjO8rlAeSmUanHE/ebFGnJihpB1dVwckFCefj06z6qlbVNZUL7AzQf8DrW24D6g+/T5/hh3jKrkWlfYzL4uFVRt8V06jKG3S7W8gD3Osm0OQIDAQAB";
+////        String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp9BkwsPC9Uf2unyEbJZd+jHC8f6T3uUKNAcJuMgCrWGEuF4pQUScqXwaCbzhJKvRY+UtLxw2lCVKwK3l1OSB9/RlHQRSuEsYD9f0ldxPStqhHvOq5xXCXJ2tuIZOh9Yp0k0g6hUcqHHhHHzqMOvDo/FX3RxCjZnM02KCekyZiRDBg8G6+aTQeLlZRc00Kb7ApJ0nWH2R9WYiFQVqS7YiOQBvnGQCGDHkuZ1/SbL4z3LIx6ezf8rm0aGJBcgxf1Eaz9xaXO3ovFRenXyb2BNbyLAewUcSiSK1IqvxLCQK+9tZxqGEyL7emNmCxK1L2A1KusDK2pYC1vPvPgdWJQIDAQAB/vHupNcvC8vb/Bf+KoB8emqH5c+wLNiRIH5z3UnlHJW9kjcJ4jb3MI4ON7YX5m1PCmXr2LRgrB4rU1BcA5sCMsDvbFgByxu5ObKH1tdM9+jfNFHTzNc+lznTx0dwbgGogD8DHjcB1kxuLFSrKfErUNkH9OSJQ1U8T9Fb0ErmjO8rlAeSmUanHE/ebFGnJihpB1dVwckFCefj06z6qlbVNZUL7AzQf8DrW24D6g+/T5/hh3jKrkWlfYzL4uFVRt8V06jKG3S7W8gD3Osm0OQIDAQAB";
+//
+//        String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoZxF3ANb+l+zxHqU7QB2kK0LZw34Ht+JZ9aPPD6GqBLzFbhb65FpPBXqP+BT8dsDmGeD84JhrMC+CCp7YGNPqZ3BGTyLeCWP+jeK75+pq+dI/9N+A0ZDxt3Gl8lJ9mRz8ZbgbhnY9vvYr/HQiLxhW1jSMXp2kWcEt/zE9zP1A+hgxIJQ5AvtDG2Ur95kV1G/SY+LXo9fqaxb2XL5bFCwbdTjN3dR+G/RD4PXbrWJuoEVXBqSgvCXe09kWH3JfbIbADxQCOlaPp7AiGxKpuvkGlwvIJbMZvQstT6VfyHtYqVwRZEk6qY1L0t7THy8AQvQ7OhsiWyV3WIHQknZqQIDAQAB";
+//        Log.d("getRSAPublicKey", "Base64 Public Key: " + base64PublicKey);
+//        byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
+//        if (decodedKey == null || decodedKey.length == 0) {
+//            Log.e("getRSAPublicKey", "Decoded key is null or empty");
+//            throw new IllegalArgumentException("Public key decoding failed");
+//        }
+//        Log.d("getRSAPublicKey", "Decoded Key Length: " + decodedKey.length);
+//
+////        byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
+//        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+//        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedKey);
+//        return keyFactory.generatePublic(keySpec);
+//    }
 
     // Method to get the file name from URI (already exists in your code)
     public static String getFileNameFromUri(Context context, Uri uri) {
