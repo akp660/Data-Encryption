@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.data_encryption.Fragments.CustomFileManagerDialog;
 import com.example.data_encryption.Fragments.DecryptFragment;
 import com.example.data_encryption.Fragments.EncryptFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -28,7 +29,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class home_page_2 extends AppCompatActivity {
 
-    CardView i_btn;
+    CardView i_btn,fileManager_btn;
     TextView user_name;
 
 
@@ -46,6 +47,7 @@ public class home_page_2 extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager2 viewPager = findViewById(R.id.view_pager);
         i_btn = findViewById(R.id.i_btn);
+        fileManager_btn = findViewById(R.id.fileManager_btn);
         user_name = findViewById(R.id.user_name);
 
 
@@ -66,6 +68,15 @@ public class home_page_2 extends AppCompatActivity {
 // for animation
                 overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 triggerVibration();
+            }
+        });
+
+        fileManager_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the DialogFragment
+                CustomFileManagerDialog dialog = new CustomFileManagerDialog();
+                dialog.show(getSupportFragmentManager(), "CustomFileManagerDialog");
             }
         });
 
