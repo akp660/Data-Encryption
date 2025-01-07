@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,11 +141,19 @@ public class CustomFileManagerDialog extends DialogFragment {
             Uri uri = FileProvider.getUriForFile(requireContext(),
                     requireContext().getApplicationContext().getPackageName() + ".provider",
                     file);
+
+            // Add logging
+            Log.d("FileManager", "File path: " + file.getAbsolutePath());
+            Log.d("FileManager", "URI: " + uri.toString());
+            Log.d("FileManager", "Mime type: " + mimeType);
+
             intent.setDataAndType(uri, mimeType);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(getContext(), "No app found to open this file", Toast.LENGTH_SHORT).show();
+            // Log the actual error
+            Log.e("FileManager", "Error opening file: ", e);
+            Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
