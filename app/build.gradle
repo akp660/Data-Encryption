@@ -29,7 +29,6 @@ android {
 }
 
 dependencies {
-
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
@@ -41,7 +40,7 @@ dependencies {
 
     implementation libs.google.flexbox
 
-    //Volley libraries
+    // Volley libraries
     implementation libs.volley
     implementation libs.jwtdecode
 
@@ -52,4 +51,14 @@ dependencies {
 
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    implementation libs.glide
+//    implementation ('org.apache.poi:poi-ooxml:5.0.0') {
+//        exclude group: 'org.apache.xmlbeans', module: 'xmlbeans'
+//    }
+//    implementation 'org.apache.xmlbeans:xmlbeans:4.0.0'
+
+
+    implementation (libs.android.pdf.viewer) {
+        exclude group: 'com.android.support', module: 'support-compat'
+    }
 }

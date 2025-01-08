@@ -22,8 +22,15 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
+//import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import com.example.data_encryption.R;
 
 
+import com.example.data_encryption.MediaViewer.AudioPlayerDialogFragment;
+import com.example.data_encryption.MediaViewer.DocViewerDialogFragment;
+import com.example.data_encryption.MediaViewer.ImageViewerDialogFragment;
+import com.example.data_encryption.MediaViewer.PdfViewerDialogFragment;
+import com.example.data_encryption.MediaViewer.VideoPlayerDialogFragment;
 import com.example.data_encryption.R;
 
 import java.io.File;
@@ -137,25 +144,44 @@ public class CustomFileManagerDialog extends DialogFragment {
     private void openFile(File file) {
         try {
             String mimeType = getMimeType(file.getName());
-            Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = FileProvider.getUriForFile(requireContext(),
                     requireContext().getApplicationContext().getPackageName() + ".provider",
                     file);
 
-            // Add logging
+            // Log file info
             Log.d("FileManager", "File path: " + file.getAbsolutePath());
             Log.d("FileManager", "URI: " + uri.toString());
             Log.d("FileManager", "Mime type: " + mimeType);
 
-            intent.setDataAndType(uri, mimeType);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(intent);
+            if (mimeType.startsWith("image/")) {
+                showDialogFragment(ImageViewerDialogFragment.newInstance(uri));
+            } else if (mimeType.equals("application/pdf")) {
+                showDialogFragment(PdfViewerDialogFragment.newInstance(uri));
+            } else if (mimeType.equals("application/msword") || mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+                showDialogFragment(DocViewerDialogFragment.newInstance(uri));
+            } else if (mimeType.startsWith("audio/")) {
+                showDialogFragment(AudioPlayerDialogFragment.newInstance(uri));
+            } else if (mimeType.startsWith("video/")) {
+                showDialogFragment(VideoPlayerDialogFragment.newInstance(uri));
+            } else {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(uri, mimeType);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(intent);
+            }
         } catch (Exception e) {
-            // Log the actual error
             Log.e("FileManager", "Error opening file: ", e);
             Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+    private void showDialogFragment(DialogFragment dialogFragment) {
+        dialogFragment.show(getChildFragmentManager(), dialogFragment.getClass().getSimpleName());
+    }
+
+
 
     private String getMimeType(String fileName) {
         // Handle PDF files explicitly

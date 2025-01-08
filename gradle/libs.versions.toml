@@ -1,6 +1,8 @@
 [versions]
 agp = "8.7.3"
+androidPdfViewer = "2.8.2"
 flexboxVersion = "3.0.0"
+glide = "4.11.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -16,6 +18,8 @@ viewpager2 = "1.1.0"
 volley = "1.2.1"
 
 [libraries]
+android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexboxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
