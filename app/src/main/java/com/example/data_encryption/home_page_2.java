@@ -76,11 +76,11 @@ public class home_page_2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Show the DialogFragment
-//                CustomFileManagerDialog dialog = new CustomFileManagerDialog();
-//                dialog.show(getSupportFragmentManager(), "CustomFileManagerDialog");
+                CustomFileManagerDialog dialog = new CustomFileManagerDialog();
+                dialog.show(getSupportFragmentManager(), "CustomFileManagerDialog");
 
-                ChooseRecipientFragment dialog = new ChooseRecipientFragment();
-                dialog.show(getSupportFragmentManager(), "ChooseRecipientFragment");
+//                ChooseRecipientFragment dialog = new ChooseRecipientFragment();
+//                dialog.show(getSupportFragmentManager(), "ChooseRecipientFragment");
             }
         });
 
