@@ -1,4 +1,6 @@
 package com.example.data_encryption.Fragments;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,7 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
+import com.android.volley.VolleyError;
+import com.example.data_encryption.ApiDirectory.ApiRequestManager;
+import com.example.data_encryption.ApiDirectory.ApiResponseListener;
 import com.example.data_encryption.R;
 
 import java.util.ArrayList;
@@ -27,6 +31,13 @@ public class ChooseRecipientFragment extends DialogFragment {
     private ArrayAdapter<Recipient> adapter;
     private List<Recipient> recipients = new ArrayList<>();
     private List<Recipient> filteredRecipients = new ArrayList<>();
+    private ApiRequestManager apiRequestManager;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        apiRequestManager = new ApiRequestManager(context);
+    }
 
     @Nullable
     @Override
@@ -52,7 +63,7 @@ public class ChooseRecipientFragment extends DialogFragment {
 
                 Recipient recipient = getItem(position);
                 if (recipient != null) {
-                    textView.setText(recipient.getUsername());
+                    textView.setText(recipient.getUsername()); // Displaying email here
                     if (recipient.isInviteNeeded()) {
                         inviteButton.setVisibility(View.VISIBLE);
                         inviteButton.setOnClickListener(v -> inviteUser(recipient.getUsername()));
@@ -86,13 +97,24 @@ public class ChooseRecipientFragment extends DialogFragment {
     }
 
     private void fetchUsernames() {
-        // Mock data
-        recipients.add(new Recipient("User1", "https://example.com/user1.jpg", false));
-        recipients.add(new Recipient("User2", "https://example.com/user2.jpg", false));
-        // Add more recipients
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
 
-        filteredRecipients.addAll(recipients);
-        adapter.notifyDataSetChanged();
+        apiRequestManager.fetchUsers(new ApiResponseListener<List<Recipient>>() {
+            @Override
+            public void onSuccess(List<Recipient> recipientList) {
+                recipients.clear();
+                recipients.addAll(recipientList);
+                filteredRecipients.clear();
+                filteredRecipients.addAll(recipients);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                Toast.makeText(getContext(), "Error fetching users: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }, token);
     }
 
     private void filterUsernames(String query) {
@@ -119,7 +141,7 @@ public class ChooseRecipientFragment extends DialogFragment {
         // Implement invite functionality here
     }
 
-    private class Recipient {
+    public static class Recipient {
         private String username;
         private String imageUrl;
         private boolean inviteNeeded;

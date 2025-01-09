@@ -22,7 +22,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.android.volley.VolleyError;
 import com.example.data_encryption.ApiDirectory.ApiRequestManager;
 import com.example.data_encryption.ApiDirectory.ApiResponseListener;
-import com.example.data_encryption.ApiDirectory.model.UserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,16 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordField=findViewById(R.id.password);
 
         homepage.setOnClickListener(view -> handleLogin());
-
-//        homepage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(LoginActivity.this, home_page_2.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-//                triggerVibration();
-//            }
-//        });
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override

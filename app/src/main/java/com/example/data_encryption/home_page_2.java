@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.data_encryption.Fragments.ChooseRecipientFragment;
 import com.example.data_encryption.Fragments.CustomFileManagerDialog;
 import com.example.data_encryption.Fragments.DecryptFragment;
 import com.example.data_encryption.Fragments.EncryptFragment;
@@ -75,8 +76,11 @@ public class home_page_2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Show the DialogFragment
-                CustomFileManagerDialog dialog = new CustomFileManagerDialog();
-                dialog.show(getSupportFragmentManager(), "CustomFileManagerDialog");
+//                CustomFileManagerDialog dialog = new CustomFileManagerDialog();
+//                dialog.show(getSupportFragmentManager(), "CustomFileManagerDialog");
+
+                ChooseRecipientFragment dialog = new ChooseRecipientFragment();
+                dialog.show(getSupportFragmentManager(), "ChooseRecipientFragment");
             }
         });
 
