@@ -114,11 +114,11 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        // Save name in SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("userName", name);
-        editor.apply();
+//        // Save name in SharedPreferences
+//        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("userName", name);
+//        editor.apply();
     }
 
 
