@@ -27,10 +27,10 @@
 
             <ImageButton
                 android:id="@+id/close_button"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="#F3F3F3"
                 android:src="@drawable/close"/>
         </RelativeLayout>
 

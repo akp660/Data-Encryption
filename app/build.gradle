@@ -56,8 +56,7 @@ dependencies {
 //        exclude group: 'org.apache.xmlbeans', module: 'xmlbeans'
 //    }
 //    implementation 'org.apache.xmlbeans:xmlbeans:4.0.0'
-
-
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:3.3.2'
     implementation (libs.android.pdf.viewer) {
         exclude group: 'com.android.support', module: 'support-compat'
     }

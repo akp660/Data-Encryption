@@ -72,12 +72,15 @@ public class CustomFileManagerDialog extends DialogFragment {
 
         closeButton.setOnClickListener(v -> dismiss());
 
-        // Start at external storage
-        currentDirectory = Environment.getExternalStorageDirectory();
+        currentDirectory = getActivity().getExternalFilesDir(null);
+//        currentDirectory = Environment.getExternalStorageDirectory();
+
         loadDirectory(currentDirectory);
 
         return view;
     }
+
+
 
     @Override
     public void onStart() {

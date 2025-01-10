@@ -131,8 +131,8 @@ public class ApiRequestManager {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 String email = jsonObject.getString("email");
-                                String imageUrl = jsonObject.optString("imageUrl", ""); // Assuming imageUrl might be optional
-                                recipientList.add(new ChooseRecipientFragment.Recipient(email, imageUrl, false));
+                                String RSAPublicKey = jsonObject.getString("encryption_token");
+                                recipientList.add(new ChooseRecipientFragment.Recipient(email, RSAPublicKey, false));
                             }
                             listener.onSuccess(recipientList);
                         } catch (JSONException e) {

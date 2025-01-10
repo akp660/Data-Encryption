@@ -14,6 +14,7 @@ activity = "1.9.1"
 constraintlayout = "2.1.4"
 biometric = "1.1.0"
 materialVersion = "1.5.0"
+taptargetview = "1.13.3"
 viewpager2 = "1.1.0"
 volley = "1.2.1"
 
@@ -32,6 +33,7 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
 material-v150 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+taptargetview = { module = "com.github.TapTargetView:TapTargetView", version.ref = "taptargetview" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 volley = { module = "com.android.volley:volley", version.ref = "volley" }
 

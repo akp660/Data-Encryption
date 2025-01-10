@@ -1,30 +1,11 @@
 package com.example.data_encryption.utils;
 
-import static com.example.data_encryption.utils.CryptoKeyGenerator.encryptFile;
-
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
-import android.util.Base64;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.crypto.SecretKey;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -61,11 +42,11 @@ public class OpenFileManager {
                                 SecretKey secretKey = CryptoKeyGenerator.generateAESKey();
                                 CryptoKeyGenerator.encryptFile(selectedFileUri, secretKey, activity.getApplicationContext());
 
-                                callback.onFileSelected(true); // Notify encryption success
+                                callback.onFileSelected(true);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(activity, "Encryption failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                callback.onFileSelected(false); // Notify encryption failure
+                                callback.onFileSelected(false);
                             }
                         }
 
@@ -86,9 +67,31 @@ public class OpenFileManager {
         return false;
     }
 
-    // Callback interface for notifying file selection results
+    public static String getFileName(Context context, Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
     public interface FileSelectedCallback {
         void onFileSelected(boolean isSuccess);
     }
 }
-

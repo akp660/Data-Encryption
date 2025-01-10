@@ -124,35 +124,36 @@ public class CryptoKeyGenerator {
                 return;
             }
 
-            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            File combinedFile = new File(downloadsDir, "encrypted_" + fileName);
+            File appDir = context.getExternalFilesDir(null);
+            File combinedFile = new File(appDir, fileName);
 
             try {
                 // Encrypt the AES key with RSA
-                PublicKey rsaPublicKey = getRSAPublicKey(); // Replace with actual key retrieval
-                if (rsaPublicKey == null) {
-                    Toast.makeText(context, "RSA PublicKey is null", Toast.LENGTH_LONG).show();
-                    Log.e("stepbystep", "RSA PublicKey is null");
-                    return;
-                }
+//                PublicKey rsaPublicKey = getRSAPublicKey(); // Replace with actual key retrieval
+//                if (rsaPublicKey == null) {
+//                    Toast.makeText(context, "RSA PublicKey is null", Toast.LENGTH_LONG).show();
+//                    Log.e("stepbystep", "RSA PublicKey is null");
+//                    return;
+//                }
+//
+//                byte[] encryptedAESKey = encryptAESKeyWithRSA(rsaPublicKey, secretKey);
+//                if (encryptedAESKey == null) {
+//                    Toast.makeText(context, "Failed to encrypt AES Key", Toast.LENGTH_LONG).show();
+//                    Log.e("stepbystep", "Encrypted AES Key is null or empty");
+//                    return;
+//                }
 
-                byte[] encryptedAESKey = encryptAESKeyWithRSA(rsaPublicKey, secretKey);
-                if (encryptedAESKey == null) {
-                    Toast.makeText(context, "Failed to encrypt AES Key", Toast.LENGTH_LONG).show();
-                    Log.e("stepbystep", "Encrypted AES Key is null or empty");
-                    return;
-                }
-
+                byte[] aesKeyBytes = secretKey.getEncoded();
                 // Combine the encrypted file data and the encrypted AES key into one file
                 try (FileOutputStream fos = new FileOutputStream(combinedFile)) {
                     // Write the encrypted file content
                     fos.write(encryptedData);
-
                     // Append the encrypted AES key
-                    fos.write(encryptedAESKey);
+//                    fos.write(encryptedAESKey);
+                    fos.write(aesKeyBytes);
                 }
 
-                Toast.makeText(context, "Combined encrypted file saved: " + combinedFile.getPath(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Combined ENCRYPTED DATA with KEY saved: " + combinedFile.getPath(), Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(context, "Error saving combined file: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -234,20 +235,20 @@ public class CryptoKeyGenerator {
     }
 
     // to retrieve the RSA public key
-    public static PublicKey getRSAPublicKey() throws Exception {
-        // Use a public key in X.509/SPKI format
-        String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjbXYlJj8AaLNtCciysIFg8d/TZv96ipRkKIh5NcnNR1IgxepMRFelCW9mwQ0BkyzfPC4SI35O9xZGYi0IOOFbCYUOCMDDTMZG4A9kQUWc1PvNmJ9+abenei6dcR8Nyr3RE6WL2M1g+Uvt11REPd7cXL8ytUoOs+LDS+0xHZVGyTftYkTniqig8QTTOeCL4ksgByHRudQMHthcbfXCHaPxT2SQ6qC19JVHWr9ViCLSPjmeZGgy85xS3VwSaX+C3fdETwitTtsD8BgSZT4+U1E7tMwcTf+CiZE/HLlcwQY1zr+feC3gIyRDJecDxgEOiZJitQA8x+t6jdB7b4mq18ztQIDAQAB";
-
-        try {
-            byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
-            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedKey);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            return keyFactory.generatePublic(keySpec);
-        } catch (Exception e) {
-            Log.e("getRSAPublicKey", "Error loading public key: " + e.getMessage());
-            throw e;
-        }
-    }
+//    public static PublicKey getRSAPublicKey() throws Exception {
+//        // Use a public key in X.509/SPKI format
+//        String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjbXYlJj8AaLNtCciysIFg8d/TZv96ipRkKIh5NcnNR1IgxepMRFelCW9mwQ0BkyzfPC4SI35O9xZGYi0IOOFbCYUOCMDDTMZG4A9kQUWc1PvNmJ9+abenei6dcR8Nyr3RE6WL2M1g+Uvt11REPd7cXL8ytUoOs+LDS+0xHZVGyTftYkTniqig8QTTOeCL4ksgByHRudQMHthcbfXCHaPxT2SQ6qC19JVHWr9ViCLSPjmeZGgy85xS3VwSaX+C3fdETwitTtsD8BgSZT4+U1E7tMwcTf+CiZE/HLlcwQY1zr+feC3gIyRDJecDxgEOiZJitQA8x+t6jdB7b4mq18ztQIDAQAB";
+//
+//        try {
+//            byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
+//            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedKey);
+//            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+//            return keyFactory.generatePublic(keySpec);
+//        } catch (Exception e) {
+//            Log.e("getRSAPublicKey", "Error loading public key: " + e.getMessage());
+//            throw e;
+//        }
+//    }
 //    public static PublicKey getRSAPublicKey() throws Exception {
 //        // Replace with the actual way to retrieve the RSA public key (e.g., from a file or server)
 //        // For now, we assume the key is stored as a Base64 string
