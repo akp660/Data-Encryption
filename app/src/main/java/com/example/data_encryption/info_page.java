@@ -1,16 +1,20 @@
 package com.example.data_encryption;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class info_page extends AppCompatActivity {
-
+CardView logoutBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +24,13 @@ public class info_page extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+        logoutBtn=findViewById(R.id.logoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleSignOut();
+            }
         });
     }
 
@@ -34,6 +45,20 @@ public class info_page extends AppCompatActivity {
 
         // Trigger the slide-in animation
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-
+    }
+    public void handleSignOut() {
+        clearToken();
+        Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(info_page.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    private void clearToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("token");
+        editor.remove("userName");
+        editor.apply();
     }
 }

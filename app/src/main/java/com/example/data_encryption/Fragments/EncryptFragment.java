@@ -11,6 +11,7 @@ import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class EncryptFragment extends Fragment {
     private static final int PICK_FILE_REQUEST = 1;
     private CardView cardUpload;
     private CardView recentFileCard;
+    Button shareBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,7 +39,12 @@ public class EncryptFragment extends Fragment {
         recentFileCard = view.findViewById(R.id.recentFile);
         recentFileCard.setOnClickListener(v -> {
             ChooseRecipientFragment dialog = new ChooseRecipientFragment();
-            dialog.show(getChildFragmentManager(), "CustomFileManagerDialog");
+            dialog.show(getChildFragmentManager(), "ChooseRecipientFragment");
+        });
+        shareBtn=view.findViewById(R.id.shareButton);
+        shareBtn.setOnClickListener(v -> {
+            ChooseRecipientFragment dialog = new ChooseRecipientFragment();
+            dialog.show(getChildFragmentManager(), "ChooseRecipientFragment");
         });
 
         cardUpload.setOnClickListener(v -> {

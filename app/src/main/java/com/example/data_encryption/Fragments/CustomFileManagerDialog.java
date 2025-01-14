@@ -72,8 +72,8 @@ public class CustomFileManagerDialog extends DialogFragment {
 
         closeButton.setOnClickListener(v -> dismiss());
 
-        currentDirectory = getActivity().getExternalFilesDir(null);
-//        currentDirectory = Environment.getExternalStorageDirectory();
+//        currentDirectory = getActivity().getExternalFilesDir(null);
+        File currentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
         loadDirectory(currentDirectory);
 
@@ -128,6 +128,8 @@ public class CustomFileManagerDialog extends DialogFragment {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             FileItem item = fileItems.get(position);
             File selectedFile = item.file;
+
+            Log.d("FileManager1", "Item clicked: " + selectedFile.getName());
 
             if (item.isDirectory) {
                 if (item.file.getName().equals("..")) {
@@ -245,8 +247,14 @@ public class CustomFileManagerDialog extends DialogFragment {
                 icon.setImageResource(item.isDirectory ?
                         R.drawable.folder : R.drawable.file);
 
+                name.setOnClickListener(v -> {
+                    Log.d("FileManager", "File clicked: " + item.file.getName());
+                    dialog.openFile(item.file);
+                });
+
                 shareButton.setVisibility(item.isDirectory ? View.GONE : View.VISIBLE);
                 shareButton.setOnClickListener(v -> {
+                    Log.d("FileManager", "Share button clicked: " + item.file.getName());
                     dialog.shareFile(item.file);
                 });
             }
@@ -254,4 +262,5 @@ public class CustomFileManagerDialog extends DialogFragment {
             return convertView;
         }
     }
+
 }

@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 saveTokenAndEmail(token, email);
 
                 Intent intent = new Intent(LoginActivity.this, home_page_2.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

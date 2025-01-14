@@ -1,4 +1,5 @@
 package com.example.data_encryption.Fragments;
+import com.example.data_encryption.utils.RSAKeyManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -132,50 +133,40 @@ public class DecryptFragment extends Fragment {
     }
     private void startDecryption(byte[] encryptedContent, byte[] encryptedAESKey,String filename) {
         try {
-            // Step 1: Decrypt AES key using RSA private key
-//            byte[] rsaPrivateKey = loadRSAPrivateKey(); // Load your RSA private key
-            String base64PrivateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCNtdiUmPwBos20JyLKwgWDx39Nm/3qKlGQoiHk1yc1HUiDF6kxEV6UJb2bBDQGTLN88LhIjfk73FkZiLQg44VsJhQ4IwMNMxkbgD2RBRZzU+82Yn35pt6d6Lp1xHw3KvdETpYvYzWD5S+3XVEQ93txcvzK1Sg6z4sNL7TEdlUbJN+1iROeKqKDxBNM54IviSyAHIdG51Awe2Fxt9cIdo/FPZJDqoLX0lUdav1WIItI+OZ5kaDLznFLdXBJpf4Ld90RPCK1O2wPwGBJlPj5TUTu0zBxN/4KJkT8cuVzBBjXOv594LeAjJEMl5wPGAQ6JkmK1ADzH63qN0HtviarXzO1AgMBAAECggEAQ9xCeDpgZ4omVnBtTUonKOlmUWxzZejZAVlawMK1QE6jFD/G4jvuniQKjYqwPRoK07hUj04JfXxx4HPhymQZ1uXPReiiQ/ZlvhElqmYUz6pwgYsdx2j87wJtFAtA7owxN7EoY03vaRddx8G0mdrhbr0BSEJWDv+nF2vydSgzbhj+ZnXpIfApfU4jiVmsQqpBc4gQEgPNH8exYl4zmTRmzJhscrgIKp7M1WxepPWFDtnNP/zkjLSdMJXrkV3dkmxHlIWnL0ZY5EYqFvhk7MaZjXLkr6u4Ii560COk2Pd7QgxoHbGL7nLGf46EfW07I2fg7Q97Ew+cvfnE5XBF5krGWwKBgQC8AQDbmR7m22fzDAAQiryTInAGvi3YWqXmjwUktzjdLd8kLEvc4/BzVYY48xJMNpN1gYG5/zK6+ONpnkOG0EERKptSEFhifg/1D3Q3gvxWWi1uoA/amP6D8mN4ORw0gw2hVzF8stofvCmZukhwji/0iNwlcsfRJRG0OW/LkaPpEwKBgQDA9pcb5BjAoCkvlLaJbFTJL1QwFm1xOz206j8s2+Ncd9TdBwPJYtcdaXC2+2fLoxCDJAlB21OVW5yZvZeJZA7hIrUxqF6lOyZCGPxOa6Nix2XMwmKMoRojyvs5v+R9ETKN9355L3RqhD1gMz8Wsu6wr7l2Vw7vWfQV5Pp6KIkRFwKBgAvMgFJH1NGmOWreeO6Q1m7hfWhe7R+j6L+EgE0ilpYC9/scMJKnV4LVfjv6vU49Kpn4S7zxkCx9zD/np9NBJKRAKUlIL1PXF4dItgF53f5JYIqNzxDoAykiwC1eYC/HfcZ/Y2KxEtFlDLNSJpOxyL6vDCnpfzLYAblu1V5QQJozAoGASCguC4z5QJbjr9pBhBQRhIYBSlYoqM4JXiy2YRT86WgaHmjwHo+qd2Ildxd+EeUxWIjSOWFF2TU/0zHVh9f1xHSRIzed5NXAkbj8KGsR1u9Pfwk1hvb7amUOGuNKEwaqS/I/xhtbwjUfKmkfb2KL5WBgzwLxH8oYf1N34tRjpRMCgYEAr82RbjTuqV3GtyquhgfvnHOq0RWSIFfHInW7x8SIKCROUqcpdyX11jr+3NDTFJ1tnGJp19Vf86MrXM/L6j2f4U+zclAJTqljYmqbLr0lS7lmcwXTmCY2q7LVVAH+1TkW9BxzoGaIht2vlTErOYIR9wlXRwuiDd7obJ27fWuy/yU=";
-            byte[] rsaPrivateKey = Base64.decode(base64PrivateKey, Base64.DEFAULT);
+            Log.d("DecryptFragment", "Step 1: Decrypting AES key using RSA private key...");
+            PrivateKey rsaPrivateKey = RSAKeyManager.getRSAPrivateKey();
+            if (rsaPrivateKey == null) { Log.d("DecryptFragment", "RSA private key retrieval failed");
+                Toast.makeText(getContext(), "Failed to retrieve RSA private key", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Log.d("DecryptFragment", "RSA private key decoded successfully.");
             byte[] aesKey = decryptAESKeyWithRSA(encryptedAESKey, rsaPrivateKey);
+            Log.d("DecryptFragment", "AES key decrypted successfully.");
 
             // Step 2: Decrypt the file content using the decrypted AES key
+            Log.d("DecryptFragment", "Step 2: Decrypting file content using the decrypted AES key...");
             byte[] decryptedFileContent = decryptFileWithAES(encryptedContent, aesKey);
+            Log.d("DecryptFragment", "File content decrypted successfully.");
 
             // Step 3: Save the decrypted file in the Downloads directory
-            saveDecryptedFile(decryptedFileContent,filename);
+            Log.d("DecryptFragment", "Step 3: Saving the decrypted file in the Downloads directory...");
+            saveDecryptedFile(decryptedFileContent, filename);
+            Log.d("DecryptFragment", "File saved successfully.");
 
             Toast.makeText(getContext(), "File decrypted and saved in Downloads!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            e.printStackTrace();
             Log.d("DecryptFragment", "Decryption failed: " + e.getMessage());
             Toast.makeText(getContext(), "Decryption failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-    public static String getFileNameFromUri(Context context, Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                result = cursor.getString(columnIndex);
-                cursor.close();
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
-    private byte[] decryptAESKeyWithRSA(byte[] encryptedAESKey, byte[] rsaPrivateKey) throws Exception {
+
+    private byte[] decryptAESKeyWithRSA(byte[] encryptedAESKey, PrivateKey rsaPrivateKey) throws Exception {
+        Log.d("DecryptFragment", "AES key decryption start.");
+
         Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(rsaPrivateKey));
-        rsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
+        rsaCipher.init(Cipher.DECRYPT_MODE, rsaPrivateKey);
+
+        Log.d("DecryptFragment", "Encrypted AES key size: " + encryptedAESKey.length);
         return rsaCipher.doFinal(encryptedAESKey);
     }
     private byte[] decryptFileWithAES(byte[] encryptedContent, byte[] aesKey) throws Exception {
@@ -216,6 +207,26 @@ public class DecryptFragment extends Fragment {
         }
         // Log or inform that the file was saved successfully
         System.out.println("Decrypted file saved to: " + decryptedFile.getAbsolutePath());
+    }
+    public static String getFileNameFromUri(Context context, Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                result = cursor.getString(columnIndex);
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
     private void triggerVibration() {
