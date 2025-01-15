@@ -167,7 +167,7 @@ public class CustomFileManagerDialog extends DialogFragment {
         dialogFragment.show(getChildFragmentManager(), dialogFragment.getClass().getSimpleName());
     }
 
-    private String getMimeType(String fileName) {
+    private static String getMimeType(String fileName) {
         if (fileName.toLowerCase().endsWith(".pdf")) {
             return "application/pdf";
         }
@@ -228,8 +228,42 @@ public class CustomFileManagerDialog extends DialogFragment {
                 ImageButton shareButton = convertView.findViewById(R.id.share_button);
 
                 name.setText(item.file.getName().equals("..") ? ".." : item.file.getName());
-                icon.setImageResource(item.isDirectory ?
-                        R.drawable.folder : R.drawable.file);
+
+                if (item.isDirectory) {
+                    icon.setImageResource(R.drawable.folder);
+                } else {
+                    String mimeType = getMimeType(item.file.getName());
+                    if (mimeType != null) {
+                        if (mimeType.startsWith("audio/")) {
+                            icon.setImageResource(R.drawable.mp3); // Replace with your MP3 file icon resource
+                        } else if (mimeType.startsWith("video/")) {
+                            icon.setImageResource(R.drawable.video); // Replace with your video file icon resource
+                        } else if (mimeType.equals("application/pdf")) {
+                            icon.setImageResource(R.drawable.pdf); // Replace with your PDF file icon resource
+                        }else if (mimeType.equals("application/msword")) {
+                            icon.setImageResource(R.drawable.docx);
+                        } else if (mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+                            icon.setImageResource(R.drawable.docx);
+                        } else if (mimeType.startsWith("image/")) {
+                            icon.setImageResource(R.drawable.img); // Replace with your image file icon resource
+                        } else {
+                            icon.setImageResource(R.drawable.file); // Default file icon
+                        }
+                    } else {
+                        icon.setImageResource(R.drawable.file); // Default file icon
+                    }
+
+                    name.setOnClickListener(v -> {
+                        Log.d("FileManager", "File clicked: " + item.file.getName());
+                        dialog.openFile(item.file);
+                    });
+
+                    shareButton.setVisibility(View.VISIBLE);
+                    shareButton.setOnClickListener(v -> {
+                        Log.d("FileManager", "Share button clicked: " + item.file.getName());
+                        dialog.shareFile(item.file);
+                    });
+                }
 
                 if (item.isDirectory) {
                     name.setOnClickListener(v -> {
@@ -243,17 +277,6 @@ public class CustomFileManagerDialog extends DialogFragment {
                     });
 
                     shareButton.setVisibility(View.GONE);
-                } else {
-                    name.setOnClickListener(v -> {
-                        Log.d("FileManager", "File clicked: " + item.file.getName());
-                        dialog.openFile(item.file);
-                    });
-
-                    shareButton.setVisibility(View.VISIBLE);
-                    shareButton.setOnClickListener(v -> {
-                        Log.d("FileManager", "Share button clicked: " + item.file.getName());
-                        dialog.shareFile(item.file);
-                    });
                 }
             }
 
