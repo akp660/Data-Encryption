@@ -57,7 +57,6 @@ public class CustomFileManagerDialog extends DialogFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // Reload directory after permissions granted
             loadDirectory(currentDirectory);
         }
     }
@@ -71,16 +70,12 @@ public class CustomFileManagerDialog extends DialogFragment {
         ImageButton closeButton = view.findViewById(R.id.close_button);
 
         closeButton.setOnClickListener(v -> dismiss());
-
-//        currentDirectory = getActivity().getExternalFilesDir(null);
-        File currentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        currentDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
         loadDirectory(currentDirectory);
 
         return view;
     }
-
-
 
     @Override
     public void onStart() {
@@ -89,7 +84,6 @@ public class CustomFileManagerDialog extends DialogFragment {
         if (dialog != null) {
             Window window = dialog.getWindow();
             if (window != null) {
-                // Set specific dimensions for dialog
                 WindowManager.LayoutParams params = window.getAttributes();
                 params.width = (int)(getResources().getDisplayMetrics().widthPixels * 0.8);
                 params.height = (int)(getResources().getDisplayMetrics().heightPixels * 0.6);
@@ -106,10 +100,8 @@ public class CustomFileManagerDialog extends DialogFragment {
 
         File[] files = directory.listFiles();
         ArrayList<FileItem> fileItems = new ArrayList<>();
-
-        // Add "up" directory except at root
         if (directory.getParent() != null) {
-            fileItems.add(new FileItem(new File(directory, ".."), true));
+            fileItems.add(new FileItem(new File(directory.getParent()), true));
         }
 
         if (files != null) {
@@ -121,7 +113,6 @@ public class CustomFileManagerDialog extends DialogFragment {
             }
         }
 
-        // Pass reference of CustomFileManagerDialog to the adapter
         FileListAdapter adapter = new FileListAdapter(requireContext(), fileItems, this);
         listView.setAdapter(adapter);
 
@@ -132,11 +123,7 @@ public class CustomFileManagerDialog extends DialogFragment {
             Log.d("FileManager1", "Item clicked: " + selectedFile.getName());
 
             if (item.isDirectory) {
-                if (item.file.getName().equals("..")) {
-                    currentDirectory = currentDirectory.getParentFile();
-                } else {
-                    currentDirectory = selectedFile;
-                }
+                currentDirectory = selectedFile;
                 loadDirectory(currentDirectory);
             } else {
                 openFile(selectedFile);
@@ -150,8 +137,6 @@ public class CustomFileManagerDialog extends DialogFragment {
             Uri uri = FileProvider.getUriForFile(requireContext(),
                     requireContext().getApplicationContext().getPackageName() + ".provider",
                     file);
-
-            // Log file info
             Log.d("FileManager", "File path: " + file.getAbsolutePath());
             Log.d("FileManager", "URI: " + uri.toString());
             Log.d("FileManager", "Mime type: " + mimeType);
@@ -183,7 +168,6 @@ public class CustomFileManagerDialog extends DialogFragment {
     }
 
     private String getMimeType(String fileName) {
-        // Handle PDF files explicitly
         if (fileName.toLowerCase().endsWith(".pdf")) {
             return "application/pdf";
         }
@@ -247,20 +231,33 @@ public class CustomFileManagerDialog extends DialogFragment {
                 icon.setImageResource(item.isDirectory ?
                         R.drawable.folder : R.drawable.file);
 
-                name.setOnClickListener(v -> {
-                    Log.d("FileManager", "File clicked: " + item.file.getName());
-                    dialog.openFile(item.file);
-                });
+                if (item.isDirectory) {
+                    name.setOnClickListener(v -> {
+                        Log.d("FileManager", "Folder clicked: " + item.file.getName());
+                        if (item.file.getName().equals("..")) {
+                            dialog.currentDirectory = dialog.currentDirectory.getParentFile();
+                        } else {
+                            dialog.currentDirectory = item.file;
+                        }
+                        dialog.loadDirectory(dialog.currentDirectory);
+                    });
 
-                shareButton.setVisibility(item.isDirectory ? View.GONE : View.VISIBLE);
-                shareButton.setOnClickListener(v -> {
-                    Log.d("FileManager", "Share button clicked: " + item.file.getName());
-                    dialog.shareFile(item.file);
-                });
+                    shareButton.setVisibility(View.GONE);
+                } else {
+                    name.setOnClickListener(v -> {
+                        Log.d("FileManager", "File clicked: " + item.file.getName());
+                        dialog.openFile(item.file);
+                    });
+
+                    shareButton.setVisibility(View.VISIBLE);
+                    shareButton.setOnClickListener(v -> {
+                        Log.d("FileManager", "Share button clicked: " + item.file.getName());
+                        dialog.shareFile(item.file);
+                    });
+                }
             }
 
             return convertView;
         }
     }
-
 }
