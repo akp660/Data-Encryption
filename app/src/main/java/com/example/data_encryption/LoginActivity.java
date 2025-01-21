@@ -1,4 +1,5 @@
 package com.example.data_encryption;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.android.volley.VolleyError;
 import com.example.data_encryption.ApiDirectory.ApiRequestManager;
 import com.example.data_encryption.ApiDirectory.ApiResponseListener;
+import com.example.data_encryption.utils.RSAKeyManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView signup;
     CardView homepage;
     EditText passwordField, usernameField;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         homepage = findViewById(R.id.cardView3);
 
         usernameField = findViewById(R.id.username);
-        passwordField=findViewById(R.id.password);
+        passwordField = findViewById(R.id.password);
 
         homepage.setOnClickListener(view -> handleLogin());
 
@@ -54,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 triggerVibration();
             }
         });
@@ -68,6 +71,14 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("LoginActivity", "Validation failed: One or more fields are empty");
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        if (RSAKeyManager.doesKeyPairExist(email)) {
+            Log.d("LoginActivity", "EXISTING KEY PAIR");
+        } else {
+            Log.d("LoginActivity", "NON EXISTING KEY PAIR");
+            Toast.makeText(this, "Key pair not found. Please sign up.", Toast.LENGTH_SHORT).show();
+            return; // Stop further login process
         }
 
         ApiRequestManager apiRequestManager = new ApiRequestManager(this);
@@ -118,7 +129,6 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("userName", email);
         editor.apply();
     }
-
 
     private void triggerVibration() {
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

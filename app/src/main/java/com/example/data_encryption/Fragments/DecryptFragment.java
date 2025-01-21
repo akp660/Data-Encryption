@@ -3,6 +3,7 @@ import com.example.data_encryption.utils.RSAKeyManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -134,7 +135,9 @@ public class DecryptFragment extends Fragment {
     private void startDecryption(byte[] encryptedContent, byte[] encryptedAESKey,String filename) {
         try {
             Log.d("DecryptFragment", "Step 1: Decrypting AES key using RSA private key...");
-            PrivateKey rsaPrivateKey = RSAKeyManager.getRSAPrivateKey();
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+            String email = sharedPreferences.getString("userName", "");
+            PrivateKey rsaPrivateKey = RSAKeyManager.getRSAPrivateKey(email);
             if (rsaPrivateKey == null) { Log.d("DecryptFragment", "RSA private key retrieval failed");
                 Toast.makeText(getContext(), "Failed to retrieve RSA private key", Toast.LENGTH_SHORT).show();
                 return;

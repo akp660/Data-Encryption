@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#646E99"
                     android:padding="0dp"
-                    android:text="SHARE"
+                    android:text="CHOOSE RECIPIENT"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
