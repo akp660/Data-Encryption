@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
     TextView signup;
     CardView homepage;
-    EditText passwordField, usernameField;
+    EditText passwordField, useridField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         signup = findViewById(R.id.signUp);
         homepage = findViewById(R.id.cardView3);
 
-        usernameField = findViewById(R.id.username);
+        useridField = findViewById(R.id.userid);
         passwordField = findViewById(R.id.password);
 
         homepage.setOnClickListener(view -> handleLogin());
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleLogin() {
-        String email = usernameField.getText().toString().trim();
+        String email = useridField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
 
         if (email.isEmpty() || password.isEmpty()) {

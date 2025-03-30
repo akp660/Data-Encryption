@@ -104,7 +104,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onError(VolleyError error) {
                 Log.d("SignupActivity", "API error: " + error.getMessage());
-                Toast.makeText(SignupActivity.this, "Signup failed: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignupActivity.this, "Signup failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
