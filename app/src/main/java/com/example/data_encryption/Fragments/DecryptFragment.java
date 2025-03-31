@@ -1,5 +1,12 @@
 package com.example.data_encryption.Fragments;
 import com.example.data_encryption.utils.RSAKeyManager;
+import com.example.data_encryption.utils.BioManager;
+import com.example.data_encryption.utils.AuthHandler;
+import com.example.data_encryption.MediaViewer.AudioPlayerDialogFragment;
+import com.example.data_encryption.MediaViewer.DocViewerDialogFragment;
+import com.example.data_encryption.MediaViewer.ImageViewerDialogFragment;
+import com.example.data_encryption.MediaViewer.PdfViewerDialogFragment;
+import com.example.data_encryption.MediaViewer.VideoPlayerDialogFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.data_encryption.R;
 
@@ -67,14 +75,26 @@ public class DecryptFragment extends Fragment {
         if (requestCode == PICK_FILE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             selectedFileUri = data.getData();
             if (selectedFileUri != null) {
-                try {
-                    // Read and separate the combined file
-                    separateCombinedFile(selectedFileUri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getContext(), "Error processing file: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
+
+                BioManager.authenticateUser(getActivity(), new AuthHandler() {
+                    @Override
+                    public void onAuthSuccess() throws IOException {
+                        try {
+                            // Proceed with decryption after successful authentication
+                            separateCombinedFile(selectedFileUri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "Error processing file: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onAuthFailure() throws IOException {
+                        Toast.makeText(getContext(), "Authentication failed. Please try again.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
             }
@@ -138,7 +158,8 @@ public class DecryptFragment extends Fragment {
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
             String email = sharedPreferences.getString("userName", "");
             PrivateKey rsaPrivateKey = RSAKeyManager.getRSAPrivateKey(email);
-            if (rsaPrivateKey == null) { Log.d("DecryptFragment", "RSA private key retrieval failed");
+            if (rsaPrivateKey == null) { 
+                Log.d("DecryptFragment", "RSA private key retrieval failed");
                 Toast.makeText(getContext(), "Failed to retrieve RSA private key", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -151,12 +172,12 @@ public class DecryptFragment extends Fragment {
             byte[] decryptedFileContent = decryptFileWithAES(encryptedContent, aesKey);
             Log.d("DecryptFragment", "File content decrypted successfully.");
 
-            // Step 3: Save the decrypted file in the Downloads directory
-            Log.d("DecryptFragment", "Step 3: Saving the decrypted file in the Downloads directory...");
-            saveDecryptedFile(decryptedFileContent, filename);
-            Log.d("DecryptFragment", "File saved successfully.");
+            // Step 3: Create a temporary file and open it with appropriate viewer
+            Log.d("DecryptFragment", "Step 3: Opening decrypted file with appropriate viewer...");
+            openDecryptedFile(decryptedFileContent, filename);
+            Log.d("DecryptFragment", "File opened successfully.");
 
-            Toast.makeText(getContext(), "File decrypted and saved in Downloads!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "File decrypted successfully!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.d("DecryptFragment", "Decryption failed: " + e.getMessage());
             Toast.makeText(getContext(), "Decryption failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -193,24 +214,64 @@ public class DecryptFragment extends Fragment {
         // Perform the decryption
         return aesCipher.doFinal(ciphertext);
     }
-    private void saveDecryptedFile(byte[] decryptedContent,String filename) throws Exception {
-//        Context context = getContext();
-//        if (context == null) return;
-        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String newFilename = "decrypted_"+filename.substring(10);
-        // Create the file path
-        File decryptedFile = new File(downloadsDir, newFilename);
-        // Write the decrypted content to the file
-        try (FileOutputStream fos = new FileOutputStream(decryptedFile)) {
+    private void openDecryptedFile(byte[] decryptedContent, String filename) throws Exception {
+        Context context = getContext();
+        if (context == null) return;
+
+        // Create a temporary file in the cache directory
+        File tempFile = new File(context.getCacheDir(), "temp_" + filename);
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
             fos.write(decryptedContent);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new Exception("Error writing decrypted file: " + e.getMessage());
+
+        // Get the MIME type
+        String mimeType = getMimeType(filename);
+        
+        // Create URI for the temporary file
+        Uri uri = androidx.core.content.FileProvider.getUriForFile(
+                context,
+                context.getApplicationContext().getPackageName() + ".provider",
+                tempFile
+        );
+
+        // Open file with appropriate viewer based on MIME type
+        if (mimeType.startsWith("image/")) {
+            showDialogFragment(ImageViewerDialogFragment.newInstance(uri));
+        } else if (mimeType.equals("application/pdf")) {
+            showDialogFragment(PdfViewerDialogFragment.newInstance(uri));
+        } else if (mimeType.equals("application/msword") || 
+                   mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+            showDialogFragment(DocViewerDialogFragment.newInstance(uri));
+        } else if (mimeType.startsWith("audio/")) {
+            showDialogFragment(AudioPlayerDialogFragment.newInstance(uri));
+        } else if (mimeType.startsWith("video/")) {
+            showDialogFragment(VideoPlayerDialogFragment.newInstance(uri));
+        } else {
+            // For other file types, use system default viewer
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, mimeType);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(intent);
         }
-        // Log or inform that the file was saved successfully
-        System.out.println("Decrypted file saved to: " + decryptedFile.getAbsolutePath());
     }
+
+    private void showDialogFragment(DialogFragment dialogFragment) {
+        dialogFragment.show(getChildFragmentManager(), dialogFragment.getClass().getSimpleName());
+    }
+
+    private static String getMimeType(String fileName) {
+        if (fileName.toLowerCase().endsWith(".pdf")) {
+            return "application/pdf";
+        }
+
+        String extension = android.webkit.MimeTypeMap.getFileExtensionFromUrl(fileName);
+        if (extension != null) {
+            String mimeType = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
+            return mimeType != null ? mimeType : "*/*";
+        }
+        return "*/*";
+    }
+
     public static String getFileNameFromUri(Context context, Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {

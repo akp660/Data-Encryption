@@ -55,6 +55,11 @@ public class home_page_2 extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String userName = sharedPreferences.getString("userName", "User");
 
+        // Hack for userName
+        int index = userName.indexOf("@gmail.com");
+        if (index != -1) {
+            userName = userName.substring(0, index);
+        }
         user_name.setText(userName);
 
 
