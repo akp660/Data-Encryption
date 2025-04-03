@@ -60,8 +60,8 @@ public class BioManager {
         });
 
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric Login")
-                .setSubtitle("Log in using your biometric credential")
+                .setTitle("Biometric Sensor")
+                .setSubtitle("Apply your biometrics")
                 .setNegativeButtonText("Use account password")
                 .build();
 
