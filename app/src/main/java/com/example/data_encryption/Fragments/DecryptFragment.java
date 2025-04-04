@@ -180,7 +180,7 @@ public class DecryptFragment extends Fragment {
             Toast.makeText(getContext(), "File decrypted successfully!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.d("DecryptFragment", "Decryption failed: " + e.getMessage());
-            Toast.makeText(getContext(), "Decryption failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Decryption failed: " + "Invalid User", Toast.LENGTH_LONG).show();
         }
     }
 
